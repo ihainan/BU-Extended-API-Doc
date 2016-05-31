@@ -169,8 +169,8 @@ __结果报文：__
 ``` JSON
 {
 	"code": 0,
-	"message": "success"
-	"data":[
+	"message": "success",
+	"data": [
 	    {"fav_id": "收藏编号 1", "username": "收藏者用户名 1", "tid": "主题编号 1", "subject": "主题标题 1", "author": "主题作者 1", "dt_created": "添加收藏时间 1"},
 	    {"fav_id": "收藏编号 2", "username": "收藏者用户名 2", "tid": "主题编号 2", "subject": "主题标题 2", "author": "主题作者 2", "dt_created": "添加收藏时间 2"}
 	]
@@ -477,10 +477,10 @@ __目前接口尚未支持模糊搜索__。
 {
 	"code": 0,
 	"message": "success",
-	"data": {
+	"data": [
 	    {"floor": "楼层 1", "tid": "主题编号 1", "pname": "主题标题 1", "author": "主题作者 1", "fid": "主题所在板块 ID 1", "fname": "主题所在板块名 1", "dt_created":"爬虫抓取时间 1", "more_fields": "更多字段"},
         {"floor": "楼层 2", "tid": "主题编号 2", "pname": "主题标题 2", "author": "主题作者 2", "fid": "主题所在板块 ID 2", "fname": "主题所在板块名 2", "dt_created":"爬虫抓取时间 2", "more_fields": "更多字段"}
-	}
+	]
 }
 ```
 
@@ -1166,7 +1166,7 @@ __结果报文：__
 ``` JSON
 {
 	"code": 0,
-	"message": "success"
+	"message": "success",
 	"data": true
 }
 ```
