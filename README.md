@@ -623,6 +623,340 @@ __结果报文：__
 }
 ```
 
+### 特定板块内根据主题标题搜索
+#### 说明
+该接口用于根据标题内容去搜索特定板块内与关键词所匹配对应的主题（Thread）。实际上接口返回的是楼层（`floor`）为 0 的帖子（POST）。
+
+`KEY` 表示搜索的关键词，`FID` 表示板块 ID，`FROM` 表示起始位置，`TO` 表示终点位置，接口返回 [`FROM`, `TO`) 区间内的列表数据。`FROM` 最小为 0，`TO` 最小为 1，`FROM` 必须小于 `TO` ，并且单次获取的数据最大为 30 条（`FROM` - `TO` <= 30）。
+
+__目前接口尚未支持模糊搜索__。
+
+#### 接口地址：__/search/forum/threads?key=KEY&fid=FID&from=FROM&to=TO__
+
+#### 请求方法：GET
+
+#### 结果报文：
+
+1、正确结果报文，由于返回的字段比较多，下面仅展示部分字段，其余字段请参考实例中的返回结果。
+
+``` JSON
+{
+	"code": 0,
+	"message": "success",
+	"data": [
+	    {"floor":0, "tid": "主题编号 1", "pname": "主题标题 1", "author": "主题作者 1", "fid": "主题所在板块 ID 1", "fname": "主题所在板块名 1", "dt_created":"爬虫抓取时间 1", "more_fields": "更多字段"},
+	    {"floor":0, "tid": "主题编号 2", "pname": "主题标题 2", "author": "主题作者 2", "fid": "主题所在板块 ID 2", "fname": "主题所在板块名 2", "dt_created":"爬虫抓取时间 2", "more_fields": "更多字段"}
+	]
+}
+```
+
+
+2、 错误结果报文：
+
+- `TO` 小于等于 0。
+
+``` JSON
+{
+    "code": 102,
+    "message": "Invalid field to: TO should be greater than 0"
+}
+```
+
+- `FROM` 小于 0。
+
+``` JSON
+{
+    "code": 102,
+    "message": "Invalid field from: FROM should be greater than or equal to 0"
+}
+```
+
+- `FROM` 小于 `to`。
+
+``` JSON
+{
+    "code": 102,
+    "message": "Invalid field to: TO should be greater than or equal to FROM"
+}
+```
+
+- `FROM` - `TO` > 30。
+
+``` JSON
+{
+    "code": 102,
+    "message": "Invalid field to: TO minus FROM should be less than or equal to 30"
+}
+```
+
+#### 实例：
+
+__地址：__ [http://bu.ihainan.me:8080/api/v2/search/forum/threads?key=bit&from=0&to=2&fid=14](http://bu.ihainan.me:8080/api/v2/search/forum/threads?key=bit&from=0&to=2&fid=14)
+
+__发送报文（GET）__：空。
+
+__结果报文：__
+
+```JSON
+{
+   "code":0,
+   "message":"success",
+   "data":[
+      {
+         "post_id":38611,
+         "floor":0,
+         "pid":14740663,
+         "fid":14,
+         "tid":10614494,
+         "aid":0,
+         "icon":"",
+         "author":"最爱锅包肉",
+         "authorid":135809,
+         "t_subject":"e租宝被抓名单里貌似有一个校友啊……世事无常",
+         "subject":"e租宝被抓名单里貌似有一个校友啊……世事无常",
+         "dateline":1465264144,
+         "message":"没有照片不知道是不是她 当年也算是院里的风云人物了吧……<br />\r\n<br />\r\n<a href=\"http://out.bitunion.org/thread-10556444-1-1.html\" target=\"_blank\">..::发自iPhone 6::..</a><br/><br/><span id=\"id_open_api_label\">..:: <a href=http://www.bitunion.org>From BIT-Union Open API Project</a> ::..<br/>",
+         "usesig":0,
+         "bbcodeoff":0,
+         "smileyoff":0,
+         "parseurloff":0,
+         "score":0,
+         "rate":0,
+         "ratetimes":0,
+         "pstatus":0,
+         "lastedit":"0",
+         "postsource":null,
+         "aaid":0,
+         "creditsrequire":0,
+         "filetype":null,
+         "filename":null,
+         "attachment":null,
+         "filesize":"0",
+         "downloads":0,
+         "uid":135809,
+         "username":"%E6%9C%80%E7%88%B1%E9%94%85%E5%8C%85%E8%",
+         "avatar":"",
+         "epid":22918,
+         "maskpost":0,
+         "attachext":null,
+         "attachsize":null,
+         "attachimg":null,
+         "exif":null,
+         "dt_created":"2016-06-07 09:52:24.0"
+      },
+      {
+         "post_id":38557,
+         "floor":0,
+         "pid":14740595,
+         "fid":14,
+         "tid":10614484,
+         "aid":0,
+         "icon":"0",
+         "author":"落雪的冬季",
+         "authorid":120227,
+         "t_subject":"想起来上上周末无聊的唠嗑",
+         "subject":"想起来上上周末无聊的唠嗑",
+         "dateline":1465197389,
+         "message":"上上周周末吧，记得唠过两个话题。<br />\r\n<a href=\"http://www.bitunion.org/viewthread.php?tid=10614087&amp;fpage=1&amp;highlight=\" target=\"_blank\">http://www.bitunion.org/viewthre ... ge=1&amp;highlight=</a><br />\r\n记得第二个是机器人吧，叫啥的埃斯顿，表现了一下，挺好的，不过持久性不长，毕竟高潮过后不修整下的话，对身体不好啊。<br />\r\n还有第一个是雷柏科技吧，上周平平淡淡的，就像过日子一样柴米油盐，但是一直这样也不行啊，今天终于来把狠的了，看她这周给不给面。<br />\r\n不过现在都不太能搞了吧，等机会可以，高潮了再搞很不爽啊",
+         "usesig":0,
+         "bbcodeoff":0,
+         "smileyoff":0,
+         "parseurloff":0,
+         "score":0,
+         "rate":0,
+         "ratetimes":0,
+         "pstatus":0,
+         "lastedit":"1465197389",
+         "postsource":null,
+         "aaid":0,
+         "creditsrequire":0,
+         "filetype":null,
+         "filename":null,
+         "attachment":null,
+         "filesize":"0",
+         "downloads":0,
+         "uid":120227,
+         "username":"%E8%90%BD%E9%9B%AA%E7%9A%84%E5%86%AC%E5%",
+         "avatar":"",
+         "epid":0,
+         "maskpost":0,
+         "attachext":null,
+         "attachsize":null,
+         "attachimg":null,
+         "exif":null,
+         "dt_created":"2016-06-06 15:22:25.0"
+      }
+   ]
+}
+```
+
+
+### 特定板块内根据回帖内容搜索
+#### 说明
+该接口用于根据帖子内容去搜索特定板块内与关键词索匹配对应的帖子。
+
+`KEY` 表示搜索的关键词，`FID` 表示板块 ID，`FROM` 表示起始位置，`TO` 表示终点位置，接口返回 [`FROM`, `TO`) 区间内的列表数据。`FROM` 最小为 0，`TO` 最小为 1，`FROM` 必须小于 `TO` ，并且单次获取的数据最大为 30 条（`FROM` - `TO` <= 30）。
+
+__目前接口尚未支持模糊搜索__。
+
+#### 接口地址：__/search/forum/posts?key=KEY&fid=FID&from=FROM&to=TO__
+
+#### 请求方法：GET
+
+#### 结果报文：
+
+1、正确结果报文，由于返回的字段比较多，下面仅展示部分字段，其余字段请参考实例中的返回结果。
+
+``` JSON
+{
+	"code": 0,
+	"message": "success",
+	"data": [
+	    {"floor": "楼层 1", "tid": "主题编号 1", "pname": "主题标题 1", "author": "主题作者 1", "fid": "主题所在板块 ID 1", "fname": "主题所在板块名 1", "dt_created":"爬虫抓取时间 1", "more_fields": "更多字段"},
+        {"floor": "楼层 2", "tid": "主题编号 2", "pname": "主题标题 2", "author": "主题作者 2", "fid": "主题所在板块 ID 2", "fname": "主题所在板块名 2", "dt_created":"爬虫抓取时间 2", "more_fields": "更多字段"}
+	]
+}
+```
+
+2、 错误结果报文：
+
+- `TO` 小于等于 0。
+
+``` JSON
+{
+    "code": 102,
+    "message": "Invalid field to: TO should be greater than 0"
+}
+```
+
+- `FROM` 小于 0。
+
+``` JSON
+{
+    "code": 102,
+    "message": "Invalid field from: FROM should be greater than or equal to 0"
+}
+```
+
+- `FROM` 小于 `to`。
+
+``` JSON
+{
+    "code": 102,
+    "message": "Invalid field to: TO should be greater than or equal to FROM"
+}
+```
+
+- `FROM` - `TO` > 30。
+
+``` JSON
+{
+    "code": 102,
+    "message": "Invalid field to: TO minus FROM should be less than or equal to 30"
+}
+```
+
+#### 实例：
+
+__地址：__ [http://bu.ihainan.me:8080/api/v2/search/forum/posts?key=bit&from=0&to=2&fid=14](http://bu.ihainan.me:8080/api/v2/search/forum/posts?key=bit&from=0&to=2&fid=14)
+
+__发送报文（GET）__：空。
+
+__结果报文：__
+
+```JSON
+{
+   "code":0,
+   "message":"success",
+   "data":[
+      {
+         "post_id":39216,
+         "floor":14,
+         "pid":14741429,
+         "fid":14,
+         "tid":10614547,
+         "aid":0,
+         "icon":"",
+         "author":"yinshuai",
+         "authorid":135673,
+         "t_subject":"毕业评估是个什么鬼？",
+         "subject":"",
+         "dateline":1465470953,
+         "message":"我给了真的联系方式，挺后悔的<br />\r\n<br />\r\n<a href=\"http://out.bitunion.org/thread-10556444-1-1.html\" target=\"_blank\">..::发自iPhone 6s::..</a><br/><br/><span id=\"id_open_api_label\">..:: <a href=http://www.bitunion.org>From BIT-Union Open API Project</a> ::..<br/>",
+         "usesig":0,
+         "bbcodeoff":0,
+         "smileyoff":0,
+         "parseurloff":0,
+         "score":0,
+         "rate":0,
+         "ratetimes":0,
+         "pstatus":0,
+         "lastedit":"1465470953",
+         "postsource":null,
+         "aaid":0,
+         "creditsrequire":0,
+         "filetype":null,
+         "filename":null,
+         "attachment":null,
+         "filesize":"0",
+         "downloads":0,
+         "uid":135673,
+         "username":"yinshuai",
+         "avatar":"%3Cimg+src%3D%22images%2Fupavatars%2F135673.jpg%22++border%3D%220%22%3E",
+         "epid":22951,
+         "maskpost":0,
+         "attachext":null,
+         "attachsize":null,
+         "attachimg":null,
+         "exif":null,
+         "dt_created":"2016-06-09 19:22:27.0"
+      },
+      {
+         "post_id":39198,
+         "floor":3,
+         "pid":14741408,
+         "fid":14,
+         "tid":10614601,
+         "aid":0,
+         "icon":"",
+         "author":"ihainan",
+         "authorid":108263,
+         "t_subject":"你校温和msl火了",
+         "subject":"",
+         "dateline":1465460945,
+         "message":"在联盟都火两天了。<br />\n<br />\n<br />\n<b>发自 Sony E6683 @BU for Android</b><br/><br/><span id=\"id_open_api_label\">..:: <a href=http://www.bitunion.org>From BIT-Union Open API Project</a> ::..<br/>",
+         "usesig":0,
+         "bbcodeoff":0,
+         "smileyoff":0,
+         "parseurloff":0,
+         "score":0,
+         "rate":0,
+         "ratetimes":0,
+         "pstatus":0,
+         "lastedit":"1465460945",
+         "postsource":null,
+         "aaid":0,
+         "creditsrequire":0,
+         "filetype":null,
+         "filename":null,
+         "attachment":null,
+         "filesize":"0",
+         "downloads":0,
+         "uid":108263,
+         "username":"ihainan",
+         "avatar":"%3Cimg+src%3D%22images%2Fupavatars%2F108263.jpg%22++border%3D%220%22%3E",
+         "epid":22949,
+         "maskpost":0,
+         "attachext":null,
+         "attachsize":null,
+         "attachimg":null,
+         "exif":null,
+         "dt_created":"2016-06-09 16:32:24.0"
+      }
+   ]
+}
+```
+
 ## 用户接口
 ### 用户已发布主题列表
 #### 说明
